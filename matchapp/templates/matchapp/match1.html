@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chart.js Example</title>
+
+   
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <h1>Matches Per season</h1>
+    <div style="height: 50%; margin: auto;"><canvas id="myChart" width="400" height="400"></canvas></div>
+
+    <script>
+        var seasonCountDict = {{ season_count_dict|safe }};
+
+        var labels = Object.keys(seasonCountDict);
+        var values = Object.values(seasonCountDict);
+
+        var specifiedLabels = ['No label', 'Specified Label', 'No label', 'No label', 'No label'];
+
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Number of Matches',
+                    data: values,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'category',
+                        labels: labels,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Season'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Number of Matches'
+                        }
+                    }
+                }
+            }
+        });
+
+        for (var i = 0; i < specifiedLabels.length; i++) {
+            myChart.data.datasets[0]._meta[0].data[i].label = specifiedLabels[i];
+        }
+
+        myChart.update();
+    </script>
+
+</body>
+</html>

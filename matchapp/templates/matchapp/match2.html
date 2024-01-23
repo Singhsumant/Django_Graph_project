@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Season Winner Chart</title>
+   
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Matches by each team per season</h1>
+    <div style="width: 80%; margin: auto;">
+        <canvas id="seasonWinnerChart"></canvas>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            var season_winner_dict = {{ season_winner_dict|safe }};
+
+            
+            var seasons = Object.keys(season_winner_dict);
+            var datasets = [];
+
+          
+            var winners = Object.keys(season_winner_dict[seasons[0]]);
+            winners.forEach(function (winner) {
+                var data = seasons.map(function (season) {
+                    return season_winner_dict[season][winner] || 0;
+                });
+
+                datasets.push({
+                    label: winner,
+                    data: data,
+                    backgroundColor: getRandomColor(), 
+                    borderWidth: 1,
+                });
+            });
+
+           
+            var ctx = document.getElementById('seasonWinnerChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: seasons,
+                    datasets: datasets,
+                },
+                options: {
+                    scales: {
+                        x: { type: 'linear', position: 'bottom' ,stacked:true},
+                        y: { beginAtZero: true, stacked: true },
+                    },
+                },
+            });
+
+         
+            function getRandomColor() {
+                var letters = '0123456789ABCDEF';
+                var color = '#';
+                for (var i = 0; i < 6; i++) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                return color;
+            }
+        });
+    </script>
+</body>
+</html>

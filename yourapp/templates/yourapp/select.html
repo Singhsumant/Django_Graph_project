@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Django App</title>
+
+    <!-- Include Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <h2>Select a Route</h2>
+
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <form action="{% url 'route1' %}" method="get">
+                    {% csrf_token %}
+                    <select class="form-select" name="route1" onchange="this.form.submit()">
+                        <option selected disabled>Select Route 1</option>
+                        <!-- Add other options as needed -->
+                        <option value="option1">Option 1</option>
+                        <option value="option2">Option 2</option>
+                    </select>
+                </form>
+            </div>
+
+            <div class="col-md-6">
+                <form action="{% url 'route2' %}" method="get">
+                    {% csrf_token %}
+                    <select class="form-select" name="route2" onchange="this.form.submit()">
+                        <option selected disabled>Select Route 2</option>
+                        <!-- Add other options as needed -->
+                        <option value="option3">Option 3</option>
+                        <option value="option4">Option 4</option>
+                    </select>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Bootstrap JS (Optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

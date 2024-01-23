@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Languages Spoken Chart</title>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    
+    <h1>language spoken per District</h1>
+    <canvas id="myChart" width="400" height="200"></canvas>
+
+    <script>
+        
+        var districtLanguageDict = {{ district_language_dict|safe }};
+
+       
+        var districts = Object.keys(districtLanguageDict);
+        var languages = Array.from(new Set(Object.values(districtLanguageDict).flat()));
+
+        var datasets = languages.map(function(language) {
+            return {
+                label: language,
+                data: districts.map(function(district) {
+                    return districtLanguageDict[district].includes(language) ? 1 : 0;
+                }),
+                backgroundColor: getRandomColor(),  
+                borderColor: 'rgba(255, 255, 255, 1)',
+                borderWidth: 1,
+                stack: 'Stack 0'
+            };
+        });
+
+    
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: districts,
+                datasets: datasets
+            },
+            options: {
+                scales: {
+                    x: {
+                        stacked: true,
+                        title: {
+                            display: true,
+                            text: 'Districts'
+                        }
+                    },
+                    y: {
+                        stacked: true,
+                        title: {
+                            display: true,
+                            text: 'Languages Spoken'
+                        }
+                    }
+                }
+            }
+        });
+
+       
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+    </script>
+
+</body>
+</html>
